@@ -1,0 +1,343 @@
+\documentclass{article}
+
+\usepackage{amsmath,amsthm, mathtools,amssymb,amsfonts,pdfpages}
+\usepackage[colorlinks=true, allcolors = blue]{hyperref}
+\usepackage{bbm}
+\usepackage{graphicx,subcaption}
+\usepackage{listings,xcolor}
+\usepackage{esint}
+\usepackage{Commands}
+
+\usepackage{enumitem}
+
+\begin{document}
+	\title{M1L2 Exercises}
+	\section*{Binomial Method solution}
+	Quick reminder for the binomial method: say we have a stock price $S_t$, with known initial value $S_0$ and known values at time $T$: $S^u_T, S^d_T$ where $S^d_T < S_0 < S^u_T$. Let there be some option $V_t$ with payoffs (value) at time $T$ based on the stock prices at time $T$, $V^u_T, V^d_T$. Also assume interest rates of $r$, compounded continuously. We want to find the option value (at time 0) $V$.
+	\\
+	
+	We construct a portfolio long 1 option and short $\D$ stocks. It will have value $V - \D S_0$ at $t=0$, and either $V_T^u - \D S_T^u$ or $V_T^d - \D S_T^d$ at time $T$. We would like to choose $\D$ such that both future values are equal, which requires:
+	
+	\begin{equation}\label{delta}
+		\D = \frac{V^u_T - V^d_T}{S^u_T - S^d_T}
+	\end{equation}
+	
+	We then require that the present value of the portfolio at time $T$: $e^{-rT}(V_T^d - \D S_T^d)$ (equivalently, using $\cdot^u$) be equal to the portfolio at time $0$, $V - \D S_0$, which gives us:
+	
+	\begin{equation}\label{full_solution}
+		V = \D S_0 + e^{-rT}(V_T^d - \D S_T^d)
+	\end{equation}
+	
+	In the case of options with $V^d_T = 0$, this further simplifies to
+	
+	\begin{equation}\label{cool_solution}
+		V = \D \left( S_0 - e^{-rT} S_T^d\right)
+	\end{equation}
+	
+	\section*{1}
+	Consider a 3 month European call option with $K=79$, on a stock following the  binomial tree can be described as below.
+	
+	\begin{equation*}
+		\begin{array}{ccc}
+			   &   & 84 \\
+			80 &   & \\
+			   &   & 76
+		\end{array}
+	\end{equation*}
+	
+	and no interest rates. We get the following option value tree:
+	
+	\begin{equation*}
+		\begin{array}{ccc}
+			  &   & 5 \\
+			V &   & \\
+		   	  &   & 0
+		\end{array}
+	\end{equation*}
+	
+	We first calculate $\D$:
+	
+	\begin{equation*}
+		\D = \frac{5 - 0}{84 - 76} = \frac{5}{8}
+	\end{equation*}
+	
+	From which we can get the option price:
+	
+	\begin{equation*}
+		V = \frac{5}{8}(80 - 76) = 2.50
+	\end{equation*}
+	
+	\section*{2}
+	
+	We have the share price structure across a year:
+	
+	\begin{equation*}
+		\begin{array}{ccc}
+			   &   & 98 \\
+			92 &   & \\
+			   &   & 86
+		\end{array}
+	\end{equation*}
+	
+	Say we have a 1 year European call with $K=90$, then we have option pricing tree:
+	
+	\begin{equation*}
+		\begin{array}{ccc}
+			   &   & 8 \\
+			V  &   & \\
+			   &   & 0
+		\end{array}
+	\end{equation*} 
+	
+	and there is an interest rate of $2\%$ p.a (cts compounding). Then we calculate $\D$:
+	
+	\begin{equation*}
+		\D = \frac{8 - 0}{98 - 86} = \frac{2}{3}
+	\end{equation*}
+	
+	From which, after discounting we can get the option price:
+	
+	\begin{equation*}
+		V = \frac{2}{3}(92 - e^{-0.02 * 1}\cdot 86) \approx 5.14
+	\end{equation*}
+	
+	\section*{3}
+	
+	We have the share price structure across 3 months ($T = 0.25$):
+	
+	\begin{equation*}
+		\begin{array}{ccc}
+			   &   & 17 \\
+			15 &   & \\
+			   &   & 13
+		\end{array}
+	\end{equation*}
+	
+	Say we have a 3 month power option with payoff $\max(S^2 - 159,0)$, then we have option pricing tree:
+	
+	\begin{equation*}
+		\begin{array}{ccc}
+			   &   & 130 \\
+			V  &   & \\
+		   	   &   & 10
+		\end{array}
+	\end{equation*} 
+	
+	with no interest rates. Then we calculate $\D$:
+	
+	\begin{equation*}
+		\D = \frac{130 - 10}{17 - 13} = 30
+	\end{equation*}
+	
+	From which, after discounting we can get the option price:
+	
+	\begin{equation*}
+		V = 30 \cdot 15 + (10 - 30 \cdot 13) = 70
+	\end{equation*}
+	
+	\section*{4}
+	
+	We have the share price structure across 3 months ($T = 0.25$):
+	
+	\begin{equation*}
+		\begin{array}{ccc}
+			   &   & 92 \\
+			75 &   & \\
+			   &   & 59
+		\end{array}
+	\end{equation*}
+
+	with no interest rates. We see that the risk neutral probability of the share going up, $p$ satisfies:
+	
+	\begin{equation*}
+		p\cdot 92 + (1-p)\cdot59 = 75
+	\end{equation*}
+	
+	i.e
+	
+	\begin{equation*}
+		p = \frac{75 - 59}{92 - 59} = 0.485
+	\end{equation*}
+	
+	And the probability of a fall is $1 - p = 0.515$.
+	
+	\section*{5}
+	
+	We have the share price structure across 3 months ($T = 0.25$):
+	
+	\begin{equation*}
+		\begin{array}{ccc}
+			   &   & 84 \\
+			80 &   & \\
+			   &   & 76
+		\end{array}
+	\end{equation*}
+	
+	Say we have a 3 month digital call option with $K=79$, then we have option pricing tree:
+	
+	\begin{equation*}
+		\begin{array}{ccc}
+			   &   & 1 \\
+			V &   & \\
+			   &   & 0
+		\end{array}
+	\end{equation*} 
+	
+	with no interest rates. Then we calculate $\D$:
+	
+	\begin{equation*}
+		\D = \frac{1 - 0}{84-76} = \frac{1}{8}
+	\end{equation*}
+	
+	From which we can get the option price:
+	
+	\begin{equation*}
+		V = \frac{1}{8} (80 - 76) = 0.5
+	\end{equation*}
+
+	\section*{7}
+	
+	We have the share price structure across 6 months ($T = 0.5$):
+	
+	\begin{equation*}
+		\begin{array}{ccccc}
+			   &   &    &   & 69 \\
+			   &   & 66 &   & \\
+			63 &   &    &   & 63 \\
+			   &   & 60 &   & \\
+			   &   &    &   & 57
+		\end{array}
+	\end{equation*}
+	
+	
+	Say we have a 6 month digital put option with $K=61$, then we have option pricing tree:
+	
+	\begin{equation*}
+		\begin{array}{ccccc}
+			&   &     &   & 0 \\
+			&   & V^u &   & \\
+		V   &   &     &   & 0 \\
+			&   & V^d &   & \\
+			&   &     &   & 4
+		\end{array}
+	\end{equation*}
+	
+	with an interest rate of 4\% with cts compounding.
+	
+	We get the two later deltas:
+	
+	\begin{align*}
+		\D^u &= \frac{0 - 0}{69 - 63} = 0 \\
+		\D^d &= \frac{0 - 4}{63 - 57} = -\frac{2}{3}
+	\end{align*}
+	
+	From which, we can recover $V^u, V^d$:
+	
+	
+	\begin{align*}
+		V^u &= 0 \\
+		V^d &= -\frac{2}{3} (60 - e^{-0.04 \cdot 0.25}\cdot 63) \approx 1.582
+	\end{align*}
+	
+	Getting us:
+	
+	\begin{equation*}
+		\begin{array}{ccccc}
+			&   &       &   & 0 \\
+			&   & 0     &   & \\
+		V   &   &       &   & 0 \\
+			&   & 1.582 &   & \\
+			&   &       &   & 4
+		\end{array}
+	\end{equation*}
+	
+	From which we can calculate $\D$:
+	
+	\begin{equation*}
+		\D = \frac{0 - 1.582}{66 - 60} = -0.264
+	\end{equation*}
+	
+	Then we can finally get $V$:
+	
+	\begin{equation*}
+		V = -0.264(63 - e^{-0.04 \cdot 0.25} \cdot 66) \approx 0.615
+	\end{equation*}
+	
+	About $\pounds 0.62$.
+	
+	\section*{8}
+	
+	We have an asset $S$ with value $\a$ today following a $T$-time step binomial tree:
+	
+	\begin{equation*}
+		\begin{array}{ccccc}
+			 &   &       &   & \a+20 \\
+			 &   & \a+10 &   & \\
+		\a   &   &       &   & \a \\
+			 &   & \a-10 &   & \\
+			 &   &       &   & \a-20 \\
+		Time &	 &  T_1  &   & T
+		\end{array}
+	\end{equation*}
+	
+	with $r=0$. Consider a European call option with payoff $V(S,T) = \max(S - \a - 5, 0)$, we get option pricing tree:
+	
+	\begin{equation*}
+		\begin{array}{ccccc}
+			 &   &        &   & 15 \\
+			 &   & V_1    &   & \\
+		V    &   &        &   & 0 \\
+			 &   & V_{-1} &   & \\
+			 &   &        &   & 0 \\
+		Time &	 &  T_1   &   & T
+		\end{array}
+	\end{equation*}
+	
+	We immediately see that $V_{-1} = 0$, as $\D_{-1} = 0$. Therefore we just need to calculate $V_1$:
+	
+	\begin{equation*}
+		\D_1 = \frac{15}{20} = 0.75
+	\end{equation*}
+	
+	And therefore:
+	
+	\begin{equation*}
+		V_1 = 0.75 (\a + 10 - \a) = 7.5 = 15/2
+	\end{equation*}
+	
+	Resulting in the tree:
+	
+	\begin{equation*}
+		\begin{array}{ccccc}
+			 &   &        &   & 15 \\
+			 &   & 15/2   &   & \\
+		V    &   &        &   & 0 \\
+			 &   & 0      &   & \\
+			 &   &        &   & 0 \\
+		Time &	 &  T_1   &   & T
+		\end{array}
+	\end{equation*}
+	
+	And so we calculate $\D$, then $V$:
+	
+	\begin{equation*}
+		\D_1 = \frac{7.5}{20} = 0.375
+	\end{equation*}
+	
+	\begin{equation*}
+		V = 0.375 (\a - (\a - 10)) = 3.75 = 15/4
+	\end{equation*}
+	
+	So we get the requested tree:
+	
+	\begin{equation*}
+		\begin{array}{ccccc}
+			 &   &        &   & 15 \\
+			 &   & 15/2   &   & \\
+		15/4 &   &        &   & 0 \\
+			 &   & 0      &   & \\
+			 &   &        &   & 0 \\
+		Time &	 &  T_1   &   & T
+		\end{array}
+	\end{equation*}
+\end{document}

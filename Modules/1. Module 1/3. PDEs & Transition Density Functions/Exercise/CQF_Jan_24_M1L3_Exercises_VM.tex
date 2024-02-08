@@ -1,0 +1,48 @@
+\documentclass{article}
+
+\usepackage{amsmath,amsthm, mathtools,amssymb,amsfonts,pdfpages}
+\usepackage[colorlinks=true, allcolors = blue]{hyperref}
+\usepackage{bbm}
+\usepackage{graphicx,subcaption}
+\usepackage{listings,xcolor}
+\usepackage{esint}
+\usepackage{Commands}
+
+\usepackage{enumitem}
+
+\begin{document}
+	\title{M1L3 Exercises}
+	\section*{1}
+	Consider:
+	
+	\begin{equation*}
+		p(y,t;y',t') = \frac{1}{2c\sqrt{\pi(t'-t)}}\exp\left(-\frac{(y'-y)^2}{4c^2(t'-t)}\right)
+	\end{equation*}
+	
+	We can drop $y,t$ (Substitute $y'-y,t'-t$ etc.) so we only need to work on:
+	
+	\begin{equation*}
+		p(y',t') = \frac{1}{2c\sqrt{\pi t'}}\exp\left(-\frac{y'^2}{4c^2 t'}\right)
+	\end{equation*}
+	
+	Calculating the necessary derivatives for the FKE, we get:
+	
+	\begin{align*}
+		\pdiff{p}{t'} &= \frac{1}{2c\sqrt{\pi}} \cdot \left(-\frac{1}{2\sqrt{t'^3}}\right)\exp\left(-\frac{y'^2}{4c^2 t'}\right) + \frac{1}{2c\sqrt{\pi t'}}\exp\left(-\frac{y'^2}{4c^2 t'}\right) \cdot \left(\frac{y'^2}{4c^2t'^2}\right) \\
+		&= \frac{1}{2c\sqrt{\pi t'}}\exp\left(-\frac{y'^2}{4c^2 t'}\right) \cdot \left(-\frac{1}{2t'} + \frac{y'^2}{4c^2t'^2}\right) \\
+		&= p \cdot \left(\frac{-2c^2t'+y'^2}{4c^2t'^2}\right)
+	\end{align*}
+	
+	\begin{align*}
+		\pdiff{p}{y'} &= p \cdot \left(-\frac{y'}{2c^2t'}\right) \\
+		\pdiff{^2p}{y'^2} &= p \cdot \left(-\frac{y'^2}{4c^4t'^2}\right) - \frac{p}{2c^2t'} \\
+		&= p \left(\frac{y'^2-2c^2t'}{4c^4t'^2}\right) \\
+		&= \frac{1}{c^2} 
+		\left[p \left( \frac{y'^2-2c^2t'}{4c^2t'^2} \right)\right] \\
+		&= \frac{1}{c^2} \pdiff{p}{t'}
+	\end{align*}
+	
+	Which is the FKE.
+	\section*{2}
+	\section*{3}
+\end{document}

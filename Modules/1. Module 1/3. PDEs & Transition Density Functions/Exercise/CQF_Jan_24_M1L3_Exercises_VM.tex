@@ -44,5 +44,80 @@
 	
 	Which is the FKE.
 	\section*{2}
+	
+	We consider a symmetric random walk. Consider sufficiently small step sizes $\d y$ and $\d t$. Then we have two previous points to consider: $(y - \d y, t - \d t), (y + \d y, t - \d t)$. Let $p(x,s;y,t) = p(y,t) $ be the transition density function. We expand $p(y - \d y, t - \d t), p(y + \d y, t - \d t)$ w.r.t $(y,t)$:
+	
+	\begin{align*}
+		p(y + \d y, t - \d t) &= p(y,t) + \d y \pdiff{p}{y} - \d t \pdiff{p}{t} + \frac{1}{2}\d^2 y \pdiff{^2p}{y^2} + o(\d t, \d y^2)\\
+		p(y - \d y, t - \d t) &= p(y,t) - \d y \pdiff{p}{y} - \d t \pdiff{p}{t} + \frac{1}{2}\d^2 y \pdiff{^2p}{y^2} + o(\d t, \d y^2)
+	\end{align*}
+	
+	We know that we want the expected position after the step to be $y$, so we take expectations:
+	
+	\begin{align*}
+		p(y,t) &= \frac{1}{2}\left(p(y + \d y, t - \d t) + p(y - \d y, t - \d t) \right) \\
+		p &= \frac{1}{2}\left(2p - 2 \d t \pdiff{p}{t} + \d y^2 \pdiff{^2 p}{y^2}\right) \\
+		\pdiff{p}{t} &= \frac{1}{2} \frac{\d y^2}{\d t} \pdiff{^2 p}{y^2}
+	\end{align*}
+	
+	For this PDE to be well-defined, we would require $\frac{\d y^2}{\d t} \sim O(1)$. We can do this as our definition of the symmetric random walk was independent of any values $\d t, \d y$ could take, apart from having to be sufficiently small. Therefore, it would have to hold true as $\d t, \d y \rightarrow 0$. We are also free to set $\d t = \d y^2$, as the limiting behaviour is the only concern, giving us:
+	
+	\begin{equation*}
+		\pdiff{p}{t} = \frac{1}{2} \pdiff{^2 p}{y^2}
+	\end{equation*}
+	
 	\section*{3}
+	
+	Let's solve the above equation. Assume we have:
+	
+	\begin{equation*}
+		p(y,t) = \frac{1}{\sqrt{t}} f(\eta)
+	\end{equation*}
+	
+	Where $\eta = \frac{y}{\sqrt{t}}$. We can then find the necessary partial derivatives:
+	
+	\begin{align*}
+		\pdiff{p}{t} &= -\left(\frac{1}{2\sqrt{t^3}} f(\eta) + \frac{y}{2t^2} f'(\eta)\right) \\
+		\pdiff{p}{y} &= \frac{1}{t}f'(\eta) \\
+		\pdiff{^2p}{y^2} &= \frac{1}{\sqrt{t^3}}f''(\eta)
+	\end{align*}
+	
+	Plugging them into the equation:
+	
+	\begin{align*}
+		 -\left(\frac{1}{2\sqrt{t^3}} f(\eta) + \frac{y}{2t^2} f'(\eta)\right) &= \frac{1}{2\sqrt{t^3}}f''(\eta) \\
+		 f(\eta) + \frac{y}{\sqrt{t}} f'(\eta) &= -f''(\eta) \\
+		 f(\eta) + \eta f'(\eta) &= -f''(\eta)
+	\end{align*}
+	
+	This is an ODE, which we can start solving with use of the product rule and integrating:
+	\begin{align*}
+		f(\eta) + \eta f'(\eta) &= -f''(\eta) \\
+		\diff{}{\eta} (\eta f(\eta)) &= -f''(\eta) \\
+		\implies \eta f(\eta) &= -f'(\eta) + K
+	\end{align*}
+	
+	For some constant $K$. Here, we consider the limiting behaviour of $f,f'$ as $\eta \rightarrow \infty$. We know for a fact that as a pdf, $p,p' \rightarrow 0$ as $y \rightarrow \infty$. As $\eta$ is just a rescaling of $y$,  $f,f' \rightarrow 0$. We will also need: $f(\eta) \sim O(\eta^{-1})$. However, we cannot have $\lim\limits_{\eta \rightarrow \infty} \frac{f(\eta)}{\eta} = L$ for $L \neq 0$, as that would imply that $\int_1^\infty f(\eta) \, d\eta = \int_1^\infty L \eta^{-1} \, d\eta = \infty$, contradicting it's pdf status. Hence we require $ f(\eta) \sim o(\eta^{-1})$ which implies that $\eta f(\eta) \rightarrow 0$. Hence, $K=0$ and we can proceed to solve the remaining equation:
+	
+	\begin{align*}
+		\eta f(\eta) &= -f'(\eta) \\
+		\int \frac{df}{f} &= \int -\eta \, d\eta \\
+		\ln f &= -\frac{\eta^2}{2} + C \\
+		f(\eta) &= Ae^{-\frac{\eta^2}{2}}
+	\end{align*}
+	
+	For some constant $A$. Recall that $p = \frac{1}{\sqrt{t}}f(y/\sqrt{t})$ is a probability distribution, therefore, we use the substitution $u = y / \sqrt{2t}$ and $\int_\Rb p = 1$ to get our constant:
+	
+	\begin{align*}
+		1 &= \int_\Rb \frac{A}{\sqrt{t}} e^{-\frac{y^2}{2t}} \, dy \\
+		1 &= A\sqrt{2}\int_\Rb e^{u^2} \, du \\
+		1 &= A \sqrt{2\pi} \\
+		A &= \frac{1}{\sqrt{2\pi}}
+	\end{align*}
+	
+	By the standard Gaussian integral. So, we finally have the solution:
+	
+	\begin{equation*}
+		p(y,t) = \frac{1}{\sqrt{2 \pi t}} \exp\left(-\frac{y^2}{2t}\right)
+	\end{equation*}
 \end{document}

@@ -1,0 +1,190 @@
+\documentclass{article}
+
+\usepackage{amsmath,amsthm, mathtools,amssymb,amsfonts,pdfpages}
+\usepackage[colorlinks=true, allcolors = blue]{hyperref}
+\usepackage{bbm}
+\usepackage{graphicx,subcaption}
+\usepackage{listings,xcolor}
+\usepackage{esint}
+\usepackage{Commands}
+
+\usepackage{enumitem}
+
+\begin{document}
+	\title{M1L4 Exercises}
+	\maketitle
+	
+	\section*{1}
+	Let $\pp$ be a standard normal random variable, $\pp \sim \Nc(0,1)$. Also let $\psi = \sqrt{dt} \phi$. By linearity, we have that:
+	
+	\begin{equation*}
+		\Eb[\psi] = \Eb[\sqrt{dt}\pp] = \sqrt{dt} \Eb[\pp] = 0
+	\end{equation*}
+	
+	And by scaling properties of variance:
+	
+	\begin{equation*}
+		\Vb[\psi] = \Vb[\sqrt{dt}\pp] = (\sqrt{dt})^2 \Vb[\pp] = dt \cdot 1 = dt
+	\end{equation*}
+	
+	\section*{2}
+	
+	We express the following in the standard form:
+	
+	\begin{equation*}
+		dG = A(G,t) \, dt + B(G,t) \, dW_t
+	\end{equation*}
+	
+	\begin{enumerate}[label=\alph*.]
+		\item		
+		\begin{equation*}
+			df = (1 - 2 \mu t f) \, dt - (1 + 2 \sqrt{f}) \, dW_t
+		\end{equation*}
+		
+		\item		
+		\begin{equation*}
+			dy = (Ay + By^2) \, dt + Cy^2 \, dW_t
+		\end{equation*}
+		
+		\item
+		\begin{equation*}
+			dS = -\frac{\n + \m S}{3} \, dt - \frac{\s}{3} \, dW_t
+		\end{equation*}
+	\end{enumerate}
+	
+	\section*{3}
+	
+	We recall the time-independent It\^o's lemma:
+	
+	\begin{equation*}
+		dF = \frac{1}{2}\pdiff{^2F}{W^2} \, dt + \pdiff{F}{W} \, dW_t
+	\end{equation*}
+	
+	We apply this equation to each of the following 
+	
+	\begin{enumerate}[label*=\alph*.]
+		\item $f(W_t) = W_t^n$:
+		
+		\begin{align*}
+			df &= \frac{n(n-1)}{2} W_t^{n-2} \, dt + nW_t^{n-1} \, dW_t
+		\end{align*}
+		
+		\item $y(W_t) = e^{W_t}$:
+		
+		\begin{align*}
+			dy &= \frac{1}{2}e^{W_t} \, dt + e^{W_t} \, dW_t \\
+			dy &= \frac{y}{2} \, dt + y \, dW_t
+		\end{align*}
+		
+		\item $g(W_t) = \log W_t$:
+		
+		\begin{align*}
+			dg &= -\frac{1}{2W_t^2} \, dt + \frac{1}{W_t} \, dW_t
+		\end{align*}
+		
+		\item $h(W_t) = \sin W_t + \cos W_t$:
+		
+		\begin{align*}
+			dh &= -\frac{\sin W_t + \cos W_t}{2} \, dt + (\cos W_t - \sin W_t) \, dW_t
+		\end{align*}
+		
+		\item $f(W_t) = a^{W_t}$ for $a > 0$.
+		
+		 \begin{align*}
+		 	df &= \frac{a^{W_t}(\log a)^2}{2} \, dt + a^{W_t}(\log a) \, dW_t \\
+		 	\frac{df}{f} &= \frac{(\log a)^2}{2} \, dt + (\log a) \, dW_t
+		 \end{align*}
+	\end{enumerate}
+	
+	\section*{4}
+	We can rewrite the time-dependent It\^o formula to get an  expression for stochastic integrals in terms of typical integrals:
+	
+	\begin{equation*}
+		\int_o^t \pdiff{F}{W_\tau} \, dW_\tau = F(t, W_t) - F(0,W_0) - \int_0^t \left(\pdiff{F}{\tau} + \frac{1}{2}\pdiff{^2F}{W_\tau^2}\right) \, d\tau
+	\end{equation*}
+	
+	Note that when solving for each of the derivatives, we do not need to add any constant function terms, i.e $F = b(t,W_t) + c(t)$ as we are implicitly calculating definite  integrals. We then re-express the following stochastic integrals:
+	
+	\begin{enumerate}[label*=\alph*.]
+		\item $\int_0^t W_\tau^3 \, dW_\tau$. We know that $\pdiff{F}{W_t} = W_t^3$, therefore:
+		
+		\begin{align*}
+			F &= \frac{1}{4}W_t^4 \\
+			\pdiff{F}{t} &= 0 \\
+			\pdiff{^2F}{W_t^2} &= 3W_t^2
+		\end{align*}
+		
+		\begin{align*}
+			\int_0^t W_\tau^3 \, dW_\tau &= \frac{W_t^4}{4} - 0 - \int_0^t \left(0 + \frac{3}{2}W_t^2\right) \, d\tau \\
+			&= \frac{1}{4}W_t^4 - \frac{3}{2}\int_0^t W_\tau^2 d\tau
+		\end{align*}
+		
+		\item $\int_0^t \tau  \, dW_\tau$. We know that $\pdiff{F}{W_t} = t$, therefore:
+		
+		\begin{align*}
+			F &= tW_t \\
+			\pdiff{F}{t} &= W_t \\
+			\pdiff{^2F}{W_t^2} &= 0
+		\end{align*}
+		
+		\begin{align*}
+			\int_0^t \tau  \, dW_\tau &= tW_t - 0 - \int_0^t \left(0 + W_t\right) \, d\tau \\
+			&= tW_t - \int_0^t W_t \, d\tau
+		\end{align*}
+		
+		\item $\int_0^t (\tau + W_\tau)  \, dW_\tau$. We know that $\pdiff{F}{W_t} = t + W_t$, therefore:
+		
+		\begin{align*}
+			F &= \frac{1}{2}W_t^2 + tW_t   \\
+			\pdiff{F}{t} &= W_t \\
+			\pdiff{^2F}{W_t^2} &= 1
+		\end{align*}
+		
+		\begin{align*}
+			\int_0^t (\tau + W_\tau)  \, dW_\tau &= \frac{1}{2}W_t^2 + tW_t - \int_0^t \left(W_t + \frac{1}{2}\right) \, d\tau
+		\end{align*}
+	\end{enumerate}
+	
+	\section*{5}
+	
+	Define the PDE:
+	
+	\begin{equation*}
+		\pdiff{u}{t} = \pdiff{^2u}{x^2} + a \pdiff{u}{x} + bu
+	\end{equation*}
+	
+	For function $u(x,t)$, and constants $a,b$. We consider the substitution:
+	
+	\begin{equation*}
+		u(x,y) = e^{\a x+\b t}v(x,t)
+	\end{equation*}
+	
+	We calculate the necessary derivatives:
+	
+	\begin{align*}
+		\pdiff{u}{t} &= e^{\a x+\b t}\left(\b v + \pdiff{v}{t}\right) \\
+		\pdiff{u}{x} &= e^{\a x+\b t}\left(\a v + \pdiff{v}{x}\right) \\
+		\pdiff{^2u}{x^2} &= e^{\a x+\b t}\left(\a^2v + 2\a\pdiff{v}{x} + \pdiff{^2v}{x^2}\right)
+	\end{align*}
+	
+	Substituting in the original equation:
+	
+	\begin{align*}
+		e^{\a x+\b t}\left(\b v + \pdiff{v}{t}\right) &= e^{\a x+\b t}\left(\a^2v + 2\a\pdiff{v}{x} + \pdiff{^2v}{x^2}\right) + a e^{\a x+\b t}\left(\a v + \pdiff{v}{x}\right) + b e^{\a x+\b t}v \\
+		\b v + \pdiff{v}{t} &= \a^2v + 2\a\pdiff{v}{x} + \pdiff{^2v}{x^2} + a \a v + a\pdiff{v}{x} + b v \\
+		\pdiff{v}{t} &= \pdiff{^2v}{x^2} + \left(2\a + a\right) \pdiff{v}{x} + (\a^2 + a\a + b - \b)v
+	\end{align*}
+	
+	i.e we want:
+	
+	\begin{align*}
+		2\a + a &= 0 \\
+		\a^2 + a\a + b - \b &= 0
+	\end{align*}
+	
+	Evidently, we see $\a = -\frac{a}{2}$, from which we get $\b = b - \frac{a^2}{4}$. Plugging these in, we get the heat equation:
+	
+	\begin{equation*}
+		\pdiff{v}{t} = \pdiff{^2v}{x^2}
+	\end{equation*}
+\end{document}

@@ -1,0 +1,189 @@
+\documentclass{article}
+
+\usepackage{amsmath,amsthm, mathtools,amssymb,amsfonts,pdfpages}
+\usepackage[colorlinks=true, allcolors = blue]{hyperref}
+\usepackage{bbm}
+\usepackage{graphicx,subcaption}
+\usepackage{listings,xcolor}
+\usepackage{esint}
+\usepackage{Commands}
+
+\usepackage{enumitem}
+
+\begin{document}
+	\title{M1L6 Exercises}
+	\maketitle
+	
+	We will use a few versions of It\^o's lemma, each one generalizes the previous:
+	
+	\begin{lemma}\label{ito1}
+		Define a twice differentiable function $F(W_t)$ where $W_t$ is a Brownian motion. Then the following version of It\^o's lemma holds:
+		
+		\begin{equation*}
+			dF = \frac{1}{2} \diff{^2F}{W^2} \, dt + \pdiff{F}{W} \, dW_t
+		\end{equation*}
+	\end{lemma}
+	
+	\begin{lemma}\label{ito2}
+		Define a twice differentiable function $F(t,W_t)$ where $W_t$ is a Brownian motion. Then the following version of It\^o's lemma holds:
+		
+		\begin{equation*}
+			dF = \left(\pdiff{F}{t} + \frac{1}{2} \diff{^2F}{W^2}\right) \, dt + \pdiff{F}{W} \, dW_t
+		\end{equation*}
+	\end{lemma}
+	
+	\begin{lemma}\label{ito3}
+		Define a twice differentiable function $F(t,S_t)$ on an It\^o process:
+		
+		\begin{equation*}
+			dS_t = A(t,S_t) \, dt + B(t,W_t) \, dW_t
+		\end{equation*}
+		
+		where $W_t$ is a Brownian motion, and $A,B$ are functions. Then the following version of It\^o's lemma holds:
+		
+		\begin{equation*}
+			dF = \left(\pdiff{F}{t} + A\pdiff{F}{S} + \frac{B^2}{2} \diff{^2F}{S^2}\right) \, dt + B\pdiff{F}{S} \, dW_t
+		\end{equation*}
+	\end{lemma}
+	
+	We also have the Fokker-Planck equation and the related steady-state distributions:
+	
+	\begin{theorem}
+		Consider a stochastic process $y_t$ such that it evolves as:
+		
+		\begin{equation*}
+			dy_t = A(t,y_t) \, dt + B(t,y_t) \, dW_t
+		\end{equation*}
+		
+		where $W_t$ is a Brownian motion. Then its transition probability density function $p(y,t;y',t')$ satisfies the Fokker-Planck (Forward Kolmogorov Equation):
+		
+		\begin{equation}\label{FP}\tag{FP}
+			\pdiff{p}{t'} = \frac{1}{2}\pdiff{^2}{y'^2}\left(B(t',y')^2p\right) - \pdiff{}{y'} \left(A(t',y')p\right) 
+		\end{equation}
+		
+		Additionally, the steady-state distribution $p_\infty$ will satisfy the following ODE:
+		
+		\begin{equation}\label{SS}\tag{SS}
+			\diff{}{y'} \left(A(t',y')p_\infty\right) = \frac{1}{2}\diff{^2}{y'^2}\left(B(t',y')^2p_\infty\right)
+		\end{equation}
+	\end{theorem}
+	\section*{1}
+	
+	Let a share price $S$ satisfy
+	
+	\begin{equation*}
+		dS_t = A(t,S_t) \, dt + B(t,S_t) \, dW_t
+	\end{equation*}
+	
+	If we had $g = g(S)$, we want to mold $A,B$ such that the drift coefficient of It\^o's lemma \ref{ito3} is zero. That is, we require that: 
+	
+	\begin{equation*}
+		A\pdiff{F}{S} + \frac{B^2}{2} \diff{^2F}{S^2} = 0
+	\end{equation*}
+	
+	This is an ODE in $S$. In order to solve this ODE, we would require $A,B$ to be in terms of $S$ only, as any dependency on $t$ would result in $g$ having $t$-terms show up, contradicting $g = g(S)$.
+	
+	\section*{3}
+	Define $F$ such that $\pdiff{F}{W} = W(1-e^{-W^2})$. We would like to write the stochastic integral of this partial derivative in the form below:
+	
+	\begin{equation*}
+		\int_0^t W_\tau\left(1 - e^{-W_\tau^2}\right) \, dW_\tau = \overline{F}(W_t) + \int_0^t G(W_\tau) \, dW_\tau
+	\end{equation*} 
+	
+	To do so, we first find the rest of the derivatives and $F$ such that we can use It\^o's lemma \ref{ito1}:
+	
+	\begin{align*}
+		F(W) &= \frac{1}{2}W^2 + \frac{1}{2}e^{-W^2} \\
+		\pdiff{^2F}{W^2} &= 1 - e^{-W^2} + 2W^2 e^{-W^2}
+	\end{align*}
+	
+	Applying to It\^o's lemma \ref{ito1} (in integral form):
+	
+	\begin{align*}
+		\frac{1}{2}W_t^2 + \frac{1}{2}e^{-W_t^2} - \frac{1}{2} &=\int_0^t  \frac{1}{2}\left(1 - e^{-W_\tau^2} + 2W_\tau^2 e^{-W_\tau^2}\right) \, d\tau + \int_0^t W_\tau\left(1 - e^{-W_\tau^2}\right) \, dW_\tau \\
+		\implies \int_0^t W_\tau\left(1 - e^{-W_\tau^2}\right) \, dW_\tau &= \frac{1}{2}W_t^2 + \frac{1}{2}e^{-W_t^2} - \frac{1}{2} + \int_0^t  -\frac{1}{2}\left(1 - e^{-W_\tau^2} + 2W_\tau^2 e^{-W_\tau^2}\right) \, d\tau
+	\end{align*}
+	
+	We see that we have the required form, if we set:
+	
+	\begin{align*}
+		\overline{F}(W_t) &= \frac{1}{2}W_t^2 + \frac{1}{2}e^{-W_t^2} - \frac{1}{2} \\
+		G(W_t) &= -\frac{1}{2}\left(1 - e^{-W_\tau^2} + 2W_\tau^2 e^{-W_\tau^2}\right)
+	\end{align*}
+	
+	\section*{4}
+	
+	Consider the process
+	
+	\begin{equation*}
+		d(\log y) = (\a - \b \log y) \, dt + \d \,dW_t
+	\end{equation*}
+	
+	We define $u$ such that $y(u) = e^u$ ($u(y) = \log y$). We see that $u$ satisfies:
+	
+	\begin{equation*}
+		du = (\a - \b u) \, dt + \d \,dW_t
+	\end{equation*}
+	
+	Noting that $\pdiff{^ny}{u} = u$ for all $n \in \Nb$, we can apply It\^o's lemma \ref{ito3} to $y = e^u$:
+	
+	\begin{align*}
+		dy = d(e^u) &= \left[0 + (\a - \b u)e^u + \frac{1}{2}\d^2 e^u\right] \, dt + \d e^u \, dW_t \\
+		\implies \frac{dy}{y} &= \left(\a - \b u + \frac{1}{2}\d^2 \right) \, dt + \d \, dW_t \\
+		\implies \frac{dy}{y} &= \left(\a - \b \log y + \frac{1}{2}\d^2 \right) \, dt + \d \, dW_t
+	\end{align*}
+	
+	\section*{5}
+	
+	Set $G(t,W_t) = e^{t + ae^{W_t}}$ for a constant $a$. We note the following identity for later:
+	
+	\begin{equation*}
+		e^{W_t} = \frac{\log G - t}{a}
+	\end{equation*}
+	
+	We calculate the partial derivatives of $G$:
+	
+	\begin{equation*}
+		\pdiff{G}{t} = e^{t + ae^{W}} = G
+	\end{equation*}
+	
+	\begin{align*}
+		\pdiff{G}{W} &= ae^{W} \cdot e^{t+ae^{W}} \\
+					 &= a \cdot \frac{\log G - t}{a} \cdot G \\
+					 &= G(\log G - t)
+	\end{align*}
+	
+	\begin{align*}
+		\pdiff{^2G}{W^2} &= \pdiff{G}{W}(\log G - t) + G \cdot\frac{1}{G}\pdiff{G}{W} \\
+		&= \pdiff{G}{W} (\log G - t + 1) \\
+		&= G(\log G - t)[(\log G - t) + 1] \\
+		&= G[(\log G - t)^2 + \log G - t]
+	\end{align*}
+	
+	We apply It\^o's lemma \ref{ito2}:
+	
+	\begin{align*}
+		dG_t &= \left[G_t + \frac{1}{2}G_t[(\log G_t - t)^2 + \log G_t - t]\right] \, dt + G(\log G_t - t) \, dW_t \\
+		\implies \frac{dG_t}{G_t} &= \left[1 + \frac{1}{2}(\log G_t - t) + \frac{1}{2}(\log G_t - t)^2\right] \, dt + (\log G_t - t) \, dW_t
+	\end{align*}
+	
+	\section*{6}
+	
+	A spot rate $r_t$ evolves according to:
+	
+	\begin{equation*}
+		dr_t = u(r_t) \, dt + \n r_t^\b \, dW_t
+	\end{equation*}
+	
+	To find the steady-state distribution $p_\infty$, we apply \eqref{SS} with $A = u$, $B = \n r^\b$:
+	
+	\begin{align*}
+		\diff{}{r}(u \cdot p_\infty) &= \frac{1}{2} \diff{^2}{r^2} \left(\n^2 r_t^{2\b}p\infty\right) \\
+		\implies u \cdot p_\infty &= \frac{1}{2} \diff{}{r}\left(\n^2 r_t^{2\b}p_\infty\right) \\
+		&= \n^2\b r_t^{2\b-1} p_\infty + \frac{1}{2}\n^2 r_t^{2\b}\diff{}{r}(p_\infty) \\
+		\implies u(r_t) &= \n^2\b r_t^{2\b-1} + \frac{1}{2}\n^2 r_t^{2\b}\cdot \frac{1}{p_\infty}\diff{}{r}(p_\infty) \\
+		&= \n^2\b r_t^{2\b-1} + \frac{1}{2}\n^2 r_t^{2\b}\cdot \diff{}{r}(\log p_\infty)
+	\end{align*}
+	
+	Note that there are no constants of integration involved as $p_\infty, \diff{p_\infty}{r}$ are assumed to be sufficiently quickly approaching $0$ as $r \rightarrow \infty$.
+\end{document}
